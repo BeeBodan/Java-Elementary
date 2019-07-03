@@ -37,10 +37,10 @@ public class Main {
 
 
         //Part Three
-        System.out.println(string());
+        System.out.println(newString());
     }
 
-    private static String string() {
+    private static String newString() {
         StringBuilder numbersString = new StringBuilder("Numbers: ");
         for(int i = 1; i <= 30; i++){
             numbersString.append("(" + i + ") ");
