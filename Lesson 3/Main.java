@@ -73,11 +73,11 @@ public class Main {
 
     private static int[] square (int[] Input) {
 
-        int[] Output = new int[10];
+        int[] output = new int[10];
         for (int i = 0; i < Input.length; i++) {
-            Output[i] = Input[i] * Input[i];
+            output[i] = Input[i] * Input[i];
         }
-        sort(Output);
-        return Output;
+        sort(output);
+        return output;
     }
 }
