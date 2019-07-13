@@ -192,14 +192,22 @@ public class IntLinkedList implements IntList, IntQueue, IntStack {
     public IntList subList(int fromIndex, int toIndex) {
         Entry tmp = first;
         Entry tmp2 = first;
-        for (int i = 0; i < size; i++) {
-            if (i >= fromIndex && i <= toIndex) {
-                tmp2.next = tmp;
-                tmp2 = tmp2.next;
+        if (fromIndex == 0) {
+            for (int i = 0; i < toIndex; i++) {
+                tmp = tmp.next;
             }
-            tmp = tmp.next;
         }
-        remove();
+
+        if (fromIndex > 0) {
+            for (int i = 0; i < size; i++) {
+                if (i >= fromIndex && i <= toIndex) {
+                    tmp2.next = tmp;
+                    tmp2 = tmp2.next;
+                }
+                tmp = tmp.next;
+            }
+            remove();
+        }
         size = (size - fromIndex) - (size - toIndex) + 1;
         return null;
     }
