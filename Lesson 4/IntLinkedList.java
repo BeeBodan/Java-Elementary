@@ -36,9 +36,9 @@ public class IntLinkedList implements IntList, IntQueue, IntStack {
     @Override
     public int remove() {
         if (!isEmpty()) {
-            Entry tmp = first;
+            Entry tmp = last;
             int firstElement = tmp.value;
-            first = first.next;
+            last = last.previous;
             size--;
             return firstElement;
         }
@@ -48,7 +48,7 @@ public class IntLinkedList implements IntList, IntQueue, IntStack {
     @Override
     public int element() {
         if (!isEmpty()) {
-            Entry tmp = first;
+            Entry tmp = last;
             return tmp.value;
         }
         return 0;
@@ -56,18 +56,21 @@ public class IntLinkedList implements IntList, IntQueue, IntStack {
 
     @Override
     public boolean push(int value) {
-        add(value);
+        Entry newPush = new Entry(value);
+        newPush.value = value;
+        newPush.next = first;
+        size++;
+        first = newPush;
         return true;
     }
 
     @Override
     public int pop() {
         if (!isEmpty()) {
-            Entry tmp = last;
-            int lastElement = tmp.value;
-            last = last.previous;
-            size--;
-            return lastElement;
+            Entry popEntry = getEntry(0);
+            int result = popEntry.value;
+            remove(0);
+            return result;
         }
         return 0;
     }
@@ -75,8 +78,9 @@ public class IntLinkedList implements IntList, IntQueue, IntStack {
     @Override
     public int peek() {
         if (!isEmpty()) {
-            Entry tmp = last;
-            return tmp.value;
+            Entry popEntry = getEntry(0);
+            int result = popEntry.value;
+            return result;
         }
         return 0;
     }
@@ -86,12 +90,18 @@ public class IntLinkedList implements IntList, IntQueue, IntStack {
         Entry tmp = first;
         Entry newEntry = new Entry(element);
         if (index < size && index >= 0) {
-            for (int i = 0; i < size; i++) {
-                if (i == index - 1) {
-                    newEntry.next = tmp.next;
-                    tmp.next = newEntry;
+            if (index == 0) {
+                tmp = newEntry;
+                tmp.next = first;
+                first = tmp;
+            } else {
+                for (int i = 0; i < size; i++) {
+                    if (i == index - 1 && index != 0) {
+                        newEntry.next = tmp.next;
+                        tmp.next = newEntry;
+                    }
+                    tmp = tmp.next;
                 }
-                tmp = tmp.next;
             }
             size++;
             return true;
@@ -102,11 +112,9 @@ public class IntLinkedList implements IntList, IntQueue, IntStack {
 
     @Override
     public void clear() {
-        int[] clearArr = new int[size];
-        for (int i = 0; i < size; i++) {
-            clearArr[i] = 0;
-        }
         size = 0;
+        first = null;
+        last = null;
     }
 
     @Override
@@ -226,5 +234,13 @@ public class IntLinkedList implements IntList, IntQueue, IntStack {
     @Override
     public String toString() {
         return Arrays.toString(toArray());
+    }
+
+    private Entry getEntry (int index) {
+        Entry tmp = first;
+        for (int i = 0; i < index; i++) {
+            tmp = tmp.next;
+        }
+        return tmp;
     }
 }
