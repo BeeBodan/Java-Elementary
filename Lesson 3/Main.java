@@ -71,11 +71,11 @@ public class Main {
         return Array;
     }
 
-    private static int[] square (int[] Input) {
+    private static int[] square (int[] input) {
 
         int[] output = new int[10];
-        for (int i = 0; i < Input.length; i++) {
-            output[i] = Input[i] * Input[i];
+        for (int i = 0; i < input.length; i++) {
+            output[i] = input[i] * input[i];
         }
         sort(output);
         return output;
