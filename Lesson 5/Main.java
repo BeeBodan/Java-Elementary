@@ -1,6 +1,5 @@
 package com.bogdan;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class Main {
@@ -27,6 +26,8 @@ public class Main {
         String arr = "abc";
         char[] chars = arr.toCharArray();
         reverse(chars, chars.length);
+
+        betterReverse("", "abcd");
     }
 
 
@@ -41,11 +42,7 @@ public class Main {
             if (chars[i] == 'L') { countLeftAndRight--; }
         }
 
-        if (countUpAndDown == 0 && countLeftAndRight == 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return countUpAndDown == 0 && countLeftAndRight == 0; //Correct!!!
     }
 
     //Method for task 2
@@ -114,5 +111,16 @@ public class Main {
         char tmp = arr[j];
         arr[j] = arr[i];
         arr[i] = tmp;
+    }
+
+    //Method for task 4 (better)
+    private static void betterReverse(String left, String right) {
+        if (right.length() <= 1) {
+            System.out.println(left + right);
+        } else {
+            for (char ch : right.toCharArray()) {
+                betterReverse(left + ch, right.replace(String.valueOf(ch), ""));
+            }
+        }
     }
 }
