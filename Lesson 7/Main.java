@@ -2,9 +2,14 @@ package com.bogdan;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Main {
+
+    private static final String INPUT_FORMAT = "dd.MM.yyyy HH:mm:ss";
+    private static final String OUTPUT_FORMAT = "dd MMM, h:mm a";
 
     public static void main(String[] args) {
         //Lesson Seventh
@@ -99,6 +104,17 @@ public class Main {
         newString(string);
         System.out.println();
 
+        //Calendar format (better code):        !!!
+        String input = "22.01.2019 19:15:00";
+        System.out.println(input);
+        SimpleDateFormat formatter = new SimpleDateFormat(INPUT_FORMAT);
+        try {
+            Date date = formatter.parse(input);
+            printDate(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         /*
          * 4. Есть List объектов у каждого из которых 2 поля: int и String. Удалить те у которых значения int
          * повторяются(оставить по одному из дубликатов).
@@ -188,6 +204,13 @@ public class Main {
     private static int conversion(String str, int a, int b) {
         int output = Integer.parseInt(str.substring(a, b));
         return output;
+    }
+
+    //Calendar format (better code):
+    private static void printDate(Date date) {
+        SimpleDateFormat formatter = new SimpleDateFormat(OUTPUT_FORMAT);
+        String result = formatter.format(date);
+        System.out.println(result);
     }
 
     //Method for task #4
