@@ -5,11 +5,13 @@ import javafx.scene.paint.Color;
 
 public class Square extends Base{
 
-    public Square(GraphicsContext gc) {
-        super(gc);
+    public Square(GraphicsContext gc, double x, double y) {
+        super(gc, x, y);
     }
 
+    @Override
     public void draw() {
-        super.draw(Color.BLUE, "Rect");
+        gc.setFill(Color.BLUE);
+        gc.fillRect(x, y, SHAPE_SIZE, SHAPE_SIZE);
     }
 }

@@ -15,6 +15,4 @@ public interface Shape {
     void sizePlus();
 
     void sizeMinus();
-
-    void enterDraw();
 }

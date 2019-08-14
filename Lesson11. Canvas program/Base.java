@@ -1,18 +1,21 @@
 package com.bogdan;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 
 public abstract class Base implements Shape{
 
-    private double SHAPE_SIZE = 50;
     private final double SCREEN_X;
     private final double SCREEN_Y;
-    private final GraphicsContext gc;
-    private double x = 100, y = 100;
+    protected double SHAPE_SIZE = 50;
+    protected GraphicsContext gc;
+    protected double x;
+    protected double y;
 
-    public Base(GraphicsContext gc) {
+    public Base(GraphicsContext gc, double x, double y) {
         this.gc = gc;
+        this.x = x;
+        this.y = y;
+
         SCREEN_X = gc.getCanvas().getWidth();
         SCREEN_Y = gc.getCanvas().getHeight();
     }
@@ -47,28 +50,15 @@ public abstract class Base implements Shape{
 
     @Override
     public void sizePlus() {
-        SHAPE_SIZE += 2;
+        if (SHAPE_SIZE != 700){
+            SHAPE_SIZE += 2;
+        }
     }
 
     @Override
     public void sizeMinus() {
-        SHAPE_SIZE -= 2;
-    }
-
-    @Override
-    public void enterDraw() {
-        gc.setFill(Color.DARKBLUE);
-        gc.fillOval(x,y, SHAPE_SIZE, SHAPE_SIZE);
-    }
-
-    public void draw(Color color, String shape) {
-        gc.setFill(color);
-        if (shape == "Oval"){
-            gc.fillOval(x, y, SHAPE_SIZE, SHAPE_SIZE);
-        } else if (shape == "Rect"){
-            gc.fillRect(x, y, SHAPE_SIZE, SHAPE_SIZE);
-        } else if (shape == "Triangle"){
-            gc.fillPolygon(new double[]{x, x + SHAPE_SIZE / 2, x + SHAPE_SIZE}, new double[]{y + SHAPE_SIZE, y, y + SHAPE_SIZE}, 3);
+        if (SHAPE_SIZE != 10){
+            SHAPE_SIZE -= 2;
         }
     }
 }

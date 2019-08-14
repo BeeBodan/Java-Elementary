@@ -1,6 +1,8 @@
 package com.bogdan;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyEvent;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,81 +10,78 @@ public class Board {
 
     private final GraphicsContext gc;
     private List<Shape> shapes = new ArrayList<>();
-    private List<Shape> shapesNoActive = new ArrayList<>();
-    private int numShape;
+    private int index = 0;
 
-    public Board(GraphicsContext gc, int numShape) {
+    public Board(GraphicsContext gc) {
         this.gc = gc;
-        this.numShape = numShape;
 
-        if (numShape == 1){
-            shapes.add(new Ball(gc));
-        } else if (numShape == 2){
-            shapes.add(new Square(gc));
-        } else if (numShape == 3){
-            shapes.add(new Triangle(gc));
+        Shape ball = new Ball(gc, 100, 100);
+        shapes.add(ball);
+        for (Shape shapes : shapes) {
+            shapes.draw();
         }
     }
 
-    public void moveRight() {
-        for (Shape shape : shapes) {
-            shape.moveRight();
-            shape.draw();
+    public void keyBoard(KeyEvent keyEvent){
+
+        gc.clearRect(0,0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
+
+        Shape shape = shapes.get(index);
+
+        switch (keyEvent.getCode()){
+            case LEFT:
+                shape.moveLeft();
+                break;
+            case RIGHT:
+                shape.moveRight();
+                break;
+            case UP:
+                shape.moveUp();
+                break;
+            case DOWN:
+                shape.moveDown();
+                break;
+            case MINUS:
+                shape.sizeMinus();
+                break;
+            case EQUALS:
+                shape.sizePlus();
+                break;
+            case DIGIT1:
+                Shape ball = new Ball(gc, 100, 100);
+                shapes.add(ball);
+                break;
+            case DIGIT2:
+                Shape square = new Square(gc, 100, 100);
+                shapes.add(square);
+                break;
+            case DIGIT3:
+                Shape triangle = new Triangle(gc, 100, 100);
+                shapes.add(triangle);
+                break;
+            case DIGIT9:
+                selectNextShape();
+                break;
+            case DIGIT8:
+                selectPreviousShape();
+                break;
         }
-        for (Shape shape : shapesNoActive) {
-            shape.enterDraw();
+        for (Shape shapes : shapes) {
+            shapes.draw();
         }
     }
 
-    public void moveLeft() {
-        for (Shape shape : shapes) {
-            shape.moveLeft();
-            shape.draw();
-        }
-        for (Shape shape : shapesNoActive) {
-            shape.enterDraw();
+    private void selectNextShape() {
+        index++;
+        if (index >= shapes.size()) {
+            index = 0;
         }
     }
 
-    public void moveUp() {
-        for (Shape shape : shapes) {
-            shape.moveUp();
-            shape.draw();
+    private void selectPreviousShape() {
+        index--;
+        if(index < 0) {
+            index = shapes.size() - 1;
         }
-        for (Shape shape : shapesNoActive) {
-            shape.enterDraw();
-        }
-    }
-
-    public void moveDown() {
-        for (Shape shape : shapes) {
-            shape.moveDown();
-            shape.draw();
-        }
-        for (Shape shape : shapesNoActive) {
-            shape.enterDraw();
-        }
-    }
-
-    public void sizePlus() {
-        for (Shape shape : shapes) {
-            shape.sizePlus();
-            shape.draw();
-        }
-    }
-
-    public void sizeMinus() {
-        for (Shape shape : shapes) {
-            shape.sizeMinus();
-            shape.draw();
-        }
-    }
-
-    public void enterDraw() {
-        shapesNoActive.add(new Ball(gc));
-        for (Shape shape : shapesNoActive) {
-            shape.enterDraw();
-        }
-        System.out.println(shapesNoActive);
     }
 }
