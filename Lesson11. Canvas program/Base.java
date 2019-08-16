@@ -2,17 +2,22 @@ package com.bogdan;
 
 import javafx.scene.canvas.GraphicsContext;
 
+import java.util.List;
+
 public abstract class Base implements Shape{
 
     private final double SCREEN_X;
     private final double SCREEN_Y;
+    private List<Shape> shapes;
     protected double SHAPE_SIZE = 50;
     protected GraphicsContext gc;
     protected double x;
     protected double y;
+    boolean check = false;
 
-    public Base(GraphicsContext gc, double x, double y) {
+    public Base(GraphicsContext gc, List<Shape> shapes, double x, double y) {
         this.gc = gc;
+        this.shapes = shapes;
         this.x = x;
         this.y = y;
 
@@ -22,29 +27,45 @@ public abstract class Base implements Shape{
 
     @Override
     public void moveRight() {
+        meet();
         if (!(x + SHAPE_SIZE > SCREEN_X)){
-            x += 4;
+            if (!meet()) {
+                x += 2;
+            } else {
+                x -= 3;
+            }
         }
     }
 
     @Override
     public void moveLeft() {
+        meet();
         if (!(x < 0)){
-            x -= 4;
+            if (!meet()) {
+                x -= 2;
+            } else {
+                x += 3;
+            }
         }
     }
 
     @Override
     public void moveDown() {
+        meet();
         if (!(y + SHAPE_SIZE > SCREEN_Y)){
-            y += 4;
+            if (!meet()) {
+                y += 2;
+            }
         }
     }
 
     @Override
     public void moveUp() {
+        meet();
         if (!(y < 0)){
-            y -= 4;
+            if (!meet()) {
+                y -= 2;
+            }
         }
     }
 
@@ -60,5 +81,31 @@ public abstract class Base implements Shape{
         if (SHAPE_SIZE != 10){
             SHAPE_SIZE -= 2;
         }
+    }
+
+    public double getX(){
+        return x;
+    }
+
+    public double getY(){
+        return y;
+    }
+
+    public boolean meet(){
+        Base baseShape1 = (Base) shapes.get(0);
+        for (int j = 1; j < shapes.size(); j++) {
+            Base baseShape2 = (Base) shapes.get(j);
+
+            double deltaX = Math.abs(baseShape1.getX() - baseShape2.getX());
+            double deltaY = Math.abs(baseShape1.getY() - baseShape2.getY());
+            double dist = deltaX + deltaY;
+
+            if (dist <= (baseShape1.SHAPE_SIZE / 2 + baseShape2.SHAPE_SIZE / 2) + 5){
+                check = true;
+            } else {
+                check = false;
+            }
+        }
+        return check;
     }
 }

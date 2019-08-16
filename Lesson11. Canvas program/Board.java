@@ -1,8 +1,8 @@
 package com.bogdan;
 
+import com.google.gson.Gson;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,10 +15,11 @@ public class Board {
     public Board(GraphicsContext gc) {
         this.gc = gc;
 
-        Shape ball = new Ball(gc, 100, 100);
+        Shape ball = new Ball(gc, shapes, 100, 100);
         shapes.add(ball);
         for (Shape shapes : shapes) {
             shapes.draw();
+            shapes.enterDraw();
         }
     }
 
@@ -48,27 +49,36 @@ public class Board {
                 shape.sizePlus();
                 break;
             case DIGIT1:
-                Shape ball = new Ball(gc, 100, 100);
+                Shape ball = new Ball(gc, shapes, 100, 100);
                 shapes.add(ball);
-                break;
-            case DIGIT2:
-                Shape square = new Square(gc, 100, 100);
-                shapes.add(square);
-                break;
-            case DIGIT3:
-                Shape triangle = new Triangle(gc, 100, 100);
-                shapes.add(triangle);
-                break;
-            case DIGIT9:
                 selectNextShape();
                 break;
-            case DIGIT8:
-                selectPreviousShape();
+            case DIGIT2:
+                Shape square = new Square(gc, shapes, 70, 180);
+                shapes.add(square);
+                selectNextShape();
+                break;
+            case DIGIT3:
+                Shape triangle = new Triangle(gc, shapes, 180, 70);
+                shapes.add(triangle);
+                selectNextShape();
+                break;
+            case DIGIT4:
+                Shape pacman = new Pacman(gc, shapes, 240, 240);
+                shapes.add(pacman);
+                selectNextShape();
+                break;
+            case TAB:
+                selectNextShape();
+                break;
+            case DELETE:
+                remove();
                 break;
         }
         for (Shape shapes : shapes) {
             shapes.draw();
         }
+        shape.enterDraw();
     }
 
     private void selectNextShape() {
@@ -76,12 +86,17 @@ public class Board {
         if (index >= shapes.size()) {
             index = 0;
         }
+        Shape shape = shapes.get(index);
+        shape.enterDraw();
     }
 
-    private void selectPreviousShape() {
-        index--;
-        if(index < 0) {
-            index = shapes.size() - 1;
+    private void remove(){
+        if (shapes.size() > 1){
+            shapes.remove(index);
+            System.out.println(index);
+            if (index != 0){
+                index--;
+            }
         }
     }
 }

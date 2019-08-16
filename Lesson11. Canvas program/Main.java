@@ -16,7 +16,7 @@ public class Main extends Application {
     public static void main(String[] args) { launch(args); }
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Canvas program");
 
         Canvas canvas = new Canvas();
@@ -30,6 +30,7 @@ public class Main extends Application {
 
         GraphicsContext gc = canvas.getGraphicsContext2D();
         board = new Board(gc);
+
         scene.setOnKeyPressed(keyEvent -> board.keyBoard(keyEvent));
     }
 }
